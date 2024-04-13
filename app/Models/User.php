@@ -58,9 +58,9 @@ class User extends Authenticatable
         return $this->hasMany(Order::class);
     }
     
-    public function userAddress()
+    public function addresses()
     {
-       return $this->belongsTo(UserAddress::class);
+       return $this->hasMany(UserAddress::class);
     }
     public function hasFavorite($favorite_id)
     {

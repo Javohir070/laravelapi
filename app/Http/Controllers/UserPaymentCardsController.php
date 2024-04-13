@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PaymentType;
-use App\Http\Requests\StorePaymentTypeRequest;
-use App\Http\Requests\UpdatePaymentTypeRequest;
+use App\Models\UserPaymentCards;
+use App\Http\Requests\StoreUserPaymentCardsRequest;
+use App\Http\Requests\UpdateUserPaymentCardsRequest;
 
-class PaymentTypeController extends Controller
+class UserPaymentCardsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class PaymentTypeController extends Controller
      */
     public function index()
     {
-        return PaymentType::all();
+        //
     }
 
     /**
@@ -31,10 +31,10 @@ class PaymentTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StorePaymentTypeRequest  $request
+     * @param  \App\Http\Requests\StoreUserPaymentCardsRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorePaymentTypeRequest $request)
+    public function store(StoreUserPaymentCardsRequest $request)
     {
         //
     }
@@ -42,10 +42,10 @@ class PaymentTypeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\PaymentType  $paymentType
+     * @param  \App\Models\UserPaymentCards  $userPaymentCards
      * @return \Illuminate\Http\Response
      */
-    public function show(PaymentType $paymentType)
+    public function show(UserPaymentCards $userPaymentCards)
     {
         //
     }
@@ -53,10 +53,10 @@ class PaymentTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\PaymentType  $paymentType
+     * @param  \App\Models\UserPaymentCards  $userPaymentCards
      * @return \Illuminate\Http\Response
      */
-    public function edit(PaymentType $paymentType)
+    public function edit(UserPaymentCards $userPaymentCards)
     {
         //
     }
@@ -64,11 +64,11 @@ class PaymentTypeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdatePaymentTypeRequest  $request
-     * @param  \App\Models\PaymentType  $paymentType
+     * @param  \App\Http\Requests\UpdateUserPaymentCardsRequest  $request
+     * @param  \App\Models\UserPaymentCards  $userPaymentCards
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePaymentTypeRequest $request, PaymentType $paymentType)
+    public function update(UpdateUserPaymentCardsRequest $request, UserPaymentCards $userPaymentCards)
     {
         //
     }
@@ -76,10 +76,10 @@ class PaymentTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\PaymentType  $paymentType
+     * @param  \App\Models\UserPaymentCards  $userPaymentCards
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PaymentType $paymentType)
+    public function destroy(UserPaymentCards $userPaymentCards)
     {
         //
     }

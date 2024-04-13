@@ -15,7 +15,7 @@ class DeliveryMethodController extends Controller
      */
     public function index()
     {
-        //
+        return DeliveryMethod::all();
     }
 
     /**

@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Translatable\HasTranslations;
 
 class Order extends Model
 {
-    use HasFactory, HasTranslations;
+    use HasFactory, HasTranslations, SoftDeletes;
 
     protected $fillable = [
         "user_id",
@@ -19,7 +20,8 @@ class Order extends Model
         "products",
         "address",
     ];
-
+    
+    protected $casts = ['address'=>'array','products'=>'array'];
     public $translatable = ['name'];
 
     public function user()

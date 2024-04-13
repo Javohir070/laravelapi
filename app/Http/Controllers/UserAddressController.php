@@ -8,35 +8,33 @@ use App\Http\Requests\UpdateUserAddressRequest;
 
 class UserAddressController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
+    
     public function index()
     {
-        //
+        return auth()->user()->addresses;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+    
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreUserAddressRequest  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(StoreUserAddressRequest $request)
     {
-        //
+        
+        UserAddress::create([
+            "user_id" => auth()->user()->id,
+            "latitude" => $request->latitude,
+            "longitude" => $request->longitude,
+            "region" => $request->region,
+            "district" => $request->district,
+            "street" => $request->street,
+            "home" => $request->home,
+        ]);
+        // auth()->user()->addresses()->create($request->toArray());
+        return true;
     }
 
     /**
@@ -50,16 +48,7 @@ class UserAddressController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\UserAddress  $userAddress
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(UserAddress $userAddress)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.
