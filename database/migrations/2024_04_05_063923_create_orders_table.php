@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('comment');
             $table->foreignId('delivery_method_id')->constrained();
             $table->foreignId('payment_type_id')->constrained();
+            $table->foreignId('status_id')->constrained();
             $table->unsignedBigInteger('sum');
             $table->text('address')->nullable();
             $table->json('products');

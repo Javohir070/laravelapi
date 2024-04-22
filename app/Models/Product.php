@@ -31,8 +31,19 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function withStock($stockId)
+    {
+        $this->stocks = [$this->stocks()->findOrFail($stockId)];
+        return $this;
+    }
+
     public function users()
     {
         return $this->belongsToMany(User::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 }

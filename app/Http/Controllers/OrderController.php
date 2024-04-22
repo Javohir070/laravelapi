@@ -6,7 +6,9 @@ use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Resources\OrderResource;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use App\Models\Stock;
 use App\Models\UserAddress;
 
 class OrderController extends Controller
@@ -30,20 +32,60 @@ class OrderController extends Controller
      */
     public function store(StoreOrderRequest $request)
     {
-        $sum = 100;
-        $products = Product::query()->limit(2)->get();
+        $sum = 0;
+        // $products = Product::query()->limit(2)->get();
+        $products = [];
+        $notFoundProducts = [];
         $address = UserAddress::find($request->address_id);
 
-        Order::create([
-            'user_id'=> auth()->id(),
-            'comment'=> $request->comment,
-            'delivery_method_id'=> $request->delivery_method_id,
-            'payment_type_id'=> $request->payment_type_id,
-            'sum'=> $sum,
-            'address' => $address,
-            'products' => $products,
-        ]);
-        return 'saqlandi';
+        foreach($request['products'] as $requestProduct){
+           $product = Product::with('stocks')->findOrFail($requestProduct['product_id']);
+           $product->quantity = $requestProduct['quantity'];
+
+           if(
+            $product->stocks()->find($requestProduct['stock_id']) &&
+            $product->stocks()->find($requestProduct['stock_id'])->quantity > $requestProduct['quantity']
+
+           ){
+            $productWithStock = $product->withStock($requestProduct['stock_id']);
+            $productResource = new ProductResource($productWithStock);
+            
+            $sum += $productResource['price'];
+            $products[] = $productResource->resolve();
+           }else{
+            //   $requestProduct["we_heve"] = $product->stocks()->find($requestProduct['stock_id'])->quantity; 
+              $notFoundProducts[] = $requestProduct;
+           }
+        }
+        if($notFoundProducts === [] && $products !== [] && $sum !== 0){
+
+            $order = Order::create([
+                'user_id'=> auth()->id(),
+                'comment'=> $request->comment,
+                'delivery_method_id'=> $request->delivery_method_id,
+                'payment_type_id'=> $request->payment_type_id,
+                'status_id' => in_array($request['payment_type_id'],[1,2])? 1 : 10,
+                'sum'=> $sum,
+                'address' => $address,
+                'products' => $products,
+            ]);
+            if ($order) {
+                foreach($products as $product){
+                    $stock = Stock::find($product['inventory'][0]['id']);
+                    $stock->quantity -= $product['order_quantity'];
+                    $stock->save();
+                }
+            }
+            return 'saqlandi';
+        }else{
+            return response([
+              'success' => false,
+              'messege' => "bu buyirtmadan qolmagan",
+              'yoq_bundan_productan' => $notFoundProducts,
+            ]);
+        }
+
+        
     }
 
     /**
