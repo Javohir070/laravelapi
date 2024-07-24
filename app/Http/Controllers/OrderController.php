@@ -19,7 +19,14 @@ class OrderController extends Controller
     }
     public function index()
     {
-        return auth()->user()->orders;
+        if(request()->has('status_id'))
+        {
+            // return $this->korinish(OrderResource::collection(
+            //     auth()->user()->orders()->where("status_id", request("status_id"))->paginate(5)
+            // ));
+        }
+
+        return $this->korinish(OrderResource::collection(auth()->user()->orders));
     }
 
    
@@ -76,13 +83,9 @@ class OrderController extends Controller
                     $stock->save();
                 }
             }
-            return 'saqlandi';
+            return $this->response("saqlandi" ,$order);
         }else{
-            return response([
-              'success' => false,
-              'messege' => "bu buyirtmadan qolmagan",
-              'yoq_bundan_productan' => $notFoundProducts,
-            ]);
+            return $this->error("bu buyirtmadan qolmagan",['yoq_bundan_productan' => $notFoundProducts,]);
         }
 
         

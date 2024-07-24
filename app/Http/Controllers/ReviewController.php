@@ -8,14 +8,14 @@ use App\Http\Requests\UpdateReviewRequest;
 
 class ReviewController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware("auth:sanctum");
+    }
     public function index()
     {
-        //
+        // return auth()->user()->reviews()->with('product')->paginate(2);
+        return auth()->user()->reviews;
     }
 
     /**
